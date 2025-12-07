@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zubaer Alam Bihim - Senior Software Engineer</title>
+    <style>
+        :root {
+            --primary: #3e4436;
+            --secondary: #2d3227;
+            --accent: #5a624f;
+            --light: #f5f7f0;
+            --dark: #1a1c18;
+            --gray: #8a8d85;
+            --light-gray: #d1d3cd;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .parallax-container {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .parallax-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            z-index: -1;
+            transform: scale(1.1);
+            transition: transform 0.1s ease-out;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--light);
+            padding: 60px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            margin: 0 auto 20px;
+            background: url('photo_2021-07-26_16-37-54.jpg') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .title {
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .contact-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-email {
+            background: var(--light);
+            color: var(--primary);
+        }
+        
+        .btn-call {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--light);
+            backdrop-filter: blur(10px);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-email:hover {
+            background: var(--accent);
+            color: var(--light);
+        }
+        
+        .btn-call:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        section {
+            padding: 60px 0;
+            position: relative;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 15px;
+            color: var(--light);
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .card {
+            background: var(--secondary);
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid var(--accent);
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--light-gray);
+        }
+        
+        .card-subtitle {
+            font-size: 1rem;
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+        
+        .card-date {
+            font-size: 0.9rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .skill-item {
+            background: var(--accent);
+            padding: 12px 20px;
+            border-radius: 30px;
+            text-align: center;
+            font-weight: 500;
+            color: var(--light);
+        }
+        
+        .experience-item, .project-item {
+            margin-bottom: 30px;
+        }
+        
+        .experience-item:last-child, .project-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .company-location {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .location {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .experience-details {
+            margin-left: 20px;
+        }
+        
+        .experience-details ul {
+            padding-left: 20px;
+            margin-top: 15px;
+        }
+        
+        .experience-details li {
+            margin-bottom: 10px;
+            color: var(--light-gray);
+        }
+        
+        .reference-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .reference-contact {
+            text-align: right;
+        }
+        
+        .reference-contact a {
+            color: var(--light-gray);
+            text-decoration: none;
+        }
+        
+        .reference-contact a:hover {
+            color: var(--primary);
+        }
+        
+        footer {
+            background: var(--secondary);
+            color: var(--light);
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid var(--accent);
+        }
+        
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .social-link {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--light);
+            transition: background 0.3s ease;
+        }
+        
+        .social-link:hover {
+            background: var(--accent);
+        }
+        
+        .highlight {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .jobsnavi-highlight {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--light);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            margin-left: 10px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: var(--accent);
+        }
+        
+        .timeline-point {
+            position: absolute;
+            left: -8px;
+            top: 5px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--primary);
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .title {
+                font-size: 1.2rem;
+            }
+            
+            .contact-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .company-location {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .reference-item {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .reference-contact {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="parallax-container">
+        <div class="parallax-bg" id="parallaxBg"></div>
+        
+        <header>
+            <div class="container">
+                <div class="header-content">
+                    <div class="profile-img"></div>
+                    <h1>Zubaer Alam Bihim</h1>
+                    <div class="title">Senior Software Engineer</div>
+                    <div class="contact-buttons">
+                        <a href="mailto:zubaerbihim@gmail.com" class="btn btn-email">
+                            <span>📧</span>
+                            Send Email
+                        </a>
+                        <a href="tel:+8801680168152" class="btn btn-call">
+                            <span>📞</span>
+                            Call Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section id="about">
+            <div class="container">
+                <h2 class="section-title">About Me</h2>
+                <div class="card">
+                    <p>Senior Software Engineer with 5+ years of experience in mobile application development. Specialized in Flutter/Dart with expertise in creating cross-platform applications for both Android and iOS. Proven track record of delivering high-quality applications for international clients across Germany, UAE, Ireland, and India.</p>
+                    <p style="margin-top: 15px;">My approach combines technical excellence with business understanding to create solutions that not only function perfectly but also meet user needs effectively. Passionate about leveraging cutting-edge technologies to solve real-world problems.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="education">
+            <div class="container">
+                <h2 class="section-title">Education</h2>
+                <div class="card">
+                    <div class="card-date">2015 – 2019</div>
+                    <h3 class="card-title">BSc. in Computer Science and Engineering</h3>
+                    <div class="card-subtitle">Notre Dame University Bangladesh</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="expertise">
+            <div class="container">
+                <h2 class="section-title">Expertise</h2>
+                <div class="skills-grid">
+                    <div class="skill-item">Flutter/Dart</div>
+                    <div class="skill-item">iOS/Android</div>
+                    <div class="skill-item">Firebase</div>
+                    <div class="skill-item">Rest API</div>
+                    <div class="skill-item">Socket</div>
+                    <div class="skill-item">Stream</div>
+                    <div class="skill-item">Team Management</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience">
+            <div class="container">
+                <h2 class="section-title">Work Experience</h2>
+                <div class="timeline">
+                    <div class="experience-item">
+                        <div class="timeline-point"></div>
+                        <div class="company-location">
+                            <div>
+                                <h3 class="card-title">JobsNavi | Chemnitz, Germany</h3>
+                                <div class="card-subtitle">Senior Software Engineer (Full Time)</div>
+                            </div>
+                            <div class="location">June 2023 – May 2025</div>
+                        </div>
+                        <div class="experience-details">
+                            <p>Created Job Recruiting software for both Android and iOS applications. Featured on <span class="jobsnavi-highlight">jobsnavi.de</span> - revolutionizing the IT application process with AI and GPS technology.</p>
+                            <ul>
+                                <li>Developed German-based investor networking app for both platforms</li>
+                                <li>Created health-based matching application</li>
+                                <li>Leveraged AI and GPS technologies for innovative job matching</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="experience-item">
+                        <div class="timeline-point"></div>
+                        <div class="company-location">
+                            <div>
+                                <h3 class="card-title">RedSpider Web & Art Design | Dubai, UAE</h3>
+                                <div class="card-subtitle">Senior Software Engineer (Full Time)</div>
+                            </div>
+                            <div class="location">April 2022 – April 2023</div>
+                        </div>
+                        <div class="experience-details">
+                            <p>Developed multiple applications including audio/video chatting platforms and healthcare systems.</p>
+                            <ul>
+                                <li>Created Feeta Business and ZappApp Social with admin panels</li>
+                                <li>Developed doctor appointment system for both doctor and patient apps</li>
+                                <li>Built matrimonial application with support chat functionality</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="experience-item">
+                        <div class="timeline-point"></div>
+                        <div class="company-location">
+                            <div>
+                                <h3 class="card-title">WhatsForDinner | Dublin, Ireland</h3>
+                                <div class="card-subtitle">Mobile Application Developer (Part Time)</div>
+                            </div>
+                            <div class="location">September 2021 – Present</div>
+                        </div>
+                        <div class="experience-details">
+                            <p>Contributed to food delivery ecosystem with multiple applications.</p>
+                            <ul>
+                                <li>Developed WFD Driver app for processing food orders</li>
+                                <li>Created customer app with comprehensive restaurant information</li>
+                                <li>Built merchant app for restaurant invoice printing</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="experience-item">
+                        <div class="timeline-point"></div>
+                        <div class="company-location">
+                            <div>
+                                <h3 class="card-title">Vertitect Technologies | Kolkata, India</h3>
+                                <div class="card-subtitle">Mobile Application Developer (Full Time)</div>
+                            </div>
+                            <div class="location">September 2021 – December 2021</div>
+                        </div>
+                        <div class="experience-details">
+                            <p>Developed diverse applications across finance, e-commerce, and education sectors.</p>
+                            <ul>
+                                <li>Created cryptocurrency management application (Masscoinex)</li>
+                                <li>Built e-commerce app for agricultural company (Krishi Vikas)</li>
+                                <li>Developed e-learning platform (SPRobotics)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="experience-item">
+                        <div class="timeline-point"></div>
+                        <div class="company-location">
+                            <div>
+                                <h3 class="card-title">Root Devs | Dhaka, Bangladesh</h3>
+                                <div class="card-subtitle">Android Application Developer (Full Time)</div>
+                            </div>
+                            <div class="location">August 2020 – December 2020</div>
+                        </div>
+                        <div class="experience-details">
+                            <p>Created multiple applications with various functionalities.</p>
+                            <ul>
+                                <li>Developed Ebrands e-commerce application</li>
+                                <li>Worked on JolshaHub content streaming app</li>
+                                <li>Built CricNow live cricket scoreboard application</li>
+                                <li>Implemented geolocation and geofencing for SPC World</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <div class="container">
+                <h2 class="section-title">Projects</h2>
+                <div class="grid">
+                    <div class="project-item">
+                        <div class="card-date">May 2024 – Present</div>
+                        <h3 class="card-title">Kingstone Comics</h3>
+                        <p>Comics reading app featuring Motion Comics & Movies for both platforms</p>
+                    </div>
+                    
+                    <div class="project-item">
+                        <div class="card-date">March 2023 – April 2023</div>
+                        <h3 class="card-title">Seven Spices</h3>
+                        <p>Food delivery system for order placement and customer delivery</p>
+                    </div>
+                    
+                    <div class="project-item">
+                        <div class="card-date">October 2021 – December 2021</div>
+                        <h3 class="card-title">Cyber Teens</h3>
+                        <p>Application designed to address and prevent cyberbullying among teenagers</p>
+                    </div>
+                    
+                    <div class="project-item">
+                        <div class="card-date">November 2022 – February 2022</div>
+                        <h3 class="card-title">Fabrics Lagbe</h3>
+                        <p>Online platform for selling, buying and bidding items</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="languages">
+            <div class="container">
+                <h2 class="section-title">Languages</h2>
+                <div class="skills-grid">
+                    <div class="skill-item">English</div>
+                    <div class="skill-item">Bengali</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="references">
+            <div class="container">
+                <h2 class="section-title">References</h2>
+                <div class="grid">
+                    <div class="card">
+                        <div class="reference-item">
+                            <div>
+                                <h3 class="card-title">Rafsan Ratul</h3>
+                                <div class="card-subtitle">Sr. Software Engineer, Amanite Digital KFT</div>
+                            </div>
+                            <div class="reference-contact">
+                                <div>+880 1742599133</div>
+                                <div><a href="mailto:hello@rafsanratul.com">hello@rafsanratul.com</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="reference-item">
+                            <div>
+                                <h3 class="card-title">Asif Khan Pathan</h3>
+                                <div class="card-subtitle">Team Leader, app-concept.com</div>
+                            </div>
+                            <div class="reference-contact">
+                                <div>+880 1785-840802</div>
+                                <div><a href="mailto:asif.khan@jobsnavi.de">asif.khan@jobsnavi.de</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <h3>Zubaer Alam Bihim</h3>
+                    <p>Senior Software Engineer</p>
+                    <div class="social-links">
+                        <a href="https://linkedin.com/in/bihim" class="social-link" target="_blank">in</a>
+                        <a href="https://github.com/bihim" class="social-link" target="_blank">G</a>
+                    </div>
+                    <p>&copy; 2025 Zubaer Alam Bihim. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const parallaxBg = document.getElementById('parallaxBg');
+            
+            document.addEventListener('scroll', function() {
+                const scrollPosition = window.pageYOffset;
+                const parallaxSpeed = 0.5;
+                
+                // Apply parallax effect to background
+                parallaxBg.style.transform = `scale(1.1) translateY(${scrollPosition * parallaxSpeed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
+
+
