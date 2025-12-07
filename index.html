@@ -4,29 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zubaer Alam Bihim - Senior Software Engineer</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90' fill='%234a5240'%3E%3C/%3E%3C/text%3E%3C/svg%3E">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --primary: #3e4436;
-            --secondary: #2d3227;
-            --accent: #5a624f;
-            --light: #f5f7f0;
+            /* Dark Theme - Olive Green Palette */
+            --primary: #4a5240;
+            --secondary: #2f3329;
+            --accent: #6b7560;
+            --light: #f8f9f4;
             --dark: #1a1c18;
             --gray: #8a8d85;
             --light-gray: #d1d3cd;
+            --card-bg: #3a4034;
+            --text-primary: #f8f9f4;
+            --text-secondary: #d1d3cd;
+            --hover-accent: #7a8470;
+            --border-color: #5a6150;
+            --overlay-dark: rgba(47, 51, 41, 0.88);
+        }
+
+        body.light-theme {
+            /* Light Theme - Soft Sage & Cream Palette */
+            --primary: #7a8470;
+            --secondary: #f8f9f4;
+            --accent: #8a8470;
+            --light: #2f3329;
+            --dark: #f8f9f4;
+            --gray: #5a6150;
+            --light-gray: #3a4034;
+            --card-bg: #ffffff;
+            --text-primary: #2f3329;
+            --text-secondary: #3a4034;
+            --hover-accent: #6b7560;
+            --border-color: #e8ede3;
+            --overlay-dark: rgba(248, 249, 244, 0.92);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
             background-color: var(--dark);
-            color: var(--light);
+            color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
         }
 
         .parallax-container {
@@ -34,16 +76,46 @@
             overflow: hidden;
         }
 
-        .parallax-bg {
+        .parallax-layer {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
             z-index: -1;
-            transform: scale(1.1);
-            transition: transform 0.1s ease-out;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            will-change: transform;
+            transition: opacity 0.3s ease;
+        }
+
+        .parallax-layer-1 {
+            background-image: url('https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=1920&q=75');
+            z-index: -3;
+        }
+
+        .parallax-layer-2 {
+            background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=1920&q=75');
+            z-index: -2;
+            opacity: 0.6;
+        }
+
+        .parallax-layer-3 {
+            background-image: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1920&q=75');
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        .parallax-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--overlay-dark);
+            z-index: -1;
+            transition: background 0.3s ease;
         }
 
         .container {
@@ -54,6 +126,63 @@
             z-index: 1;
         }
 
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .theme-toggle:active {
+            transform: scale(0.95);
+        }
+
+        .theme-toggle svg {
+            width: 24px;
+            height: 24px;
+            transition: transform 0.6s ease, opacity 0.3s ease;
+        }
+
+        .theme-toggle .sun-icon {
+            position: absolute;
+            opacity: 0;
+            transform: rotate(-90deg);
+        }
+
+        .theme-toggle .moon-icon {
+            position: absolute;
+            opacity: 1;
+            transform: rotate(0deg);
+        }
+
+        body.light-theme .theme-toggle .sun-icon {
+            opacity: 1;
+            transform: rotate(0deg);
+        }
+
+        body.light-theme .theme-toggle .moon-icon {
+            opacity: 0;
+            transform: rotate(90deg);
+        }
+
         header {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: var(--light);
@@ -61,6 +190,7 @@
             text-align: center;
             position: relative;
             overflow: hidden;
+            transition: background 0.3s ease;
         }
 
         .header-content {
@@ -72,13 +202,20 @@
             width: 150px;
             height: 150px;
             border-radius: 50%;
-            border: 5px solid rgba(255, 255, 255, 0.3);
+            border: 5px solid var(--border-color);
             margin: 0 auto 20px;
             background: url('photo_2021-07-26_16-37-54.jpg') center/cover;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 0;
+            transition: all 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .profile-img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
         }
 
         h1 {
@@ -126,8 +263,8 @@
         }
 
         .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
         }
 
         .btn-email:hover {
@@ -142,6 +279,14 @@
         section {
             padding: 60px 0;
             position: relative;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .section-title {
@@ -172,26 +317,50 @@
         .card {
             background: var(--secondary);
             border-radius: 12px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
             padding: 30px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
             border: 1px solid var(--accent);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+        }
+
+        .card:hover::before {
+            opacity: 0.05;
         }
 
         .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        .card > * {
+            position: relative;
+            z-index: 1;
         }
 
         .card-title {
             font-size: 1.3rem;
             margin-bottom: 15px;
-            color: var(--light-gray);
+            color: var(--text-primary);
         }
 
         .card-subtitle {
             font-size: 1rem;
-            color: var(--gray);
+            color: var(--text-secondary);
             margin-bottom: 10px;
         }
 
@@ -215,6 +384,14 @@
             text-align: center;
             font-weight: 500;
             color: var(--light);
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .skill-item:hover {
+            transform: scale(1.08) translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            background: var(--hover-accent);
         }
 
         .experience-item, .project-item {
@@ -261,20 +438,22 @@
         }
 
         .reference-contact a {
-            color: var(--light-gray);
+            color: var(--text-secondary);
             text-decoration: none;
+            transition: color 0.3s ease;
         }
 
         .reference-contact a:hover {
-            color: var(--primary);
+            color: var(--accent);
         }
 
         footer {
             background: var(--secondary);
-            color: var(--light);
+            color: var(--text-primary);
             padding: 40px 0;
             text-align: center;
-            border-top: 1px solid var(--accent);
+            border-top: 1px solid var(--border-color);
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
         .footer-content {
@@ -290,9 +469,8 @@
         }
 
         .social-link {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             background: var(--primary);
             border-radius: 50%;
             display: flex;
@@ -300,11 +478,23 @@
             justify-content: center;
             text-decoration: none;
             color: var(--light);
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
+        }
+
+        .social-link svg {
+            width: 22px;
+            height: 22px;
+            transition: transform 0.3s ease;
         }
 
         .social-link:hover {
             background: var(--accent);
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .social-link:hover svg {
+            transform: scale(1.1);
         }
 
         .highlight {
@@ -334,6 +524,7 @@
             height: 100%;
             width: 2px;
             background: var(--accent);
+            transition: background 0.3s ease;
         }
 
         .timeline-point {
@@ -344,6 +535,12 @@
             height: 16px;
             border-radius: 50%;
             background: var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover .timeline-point {
+            transform: scale(1.3);
+            box-shadow: 0 0 0 4px var(--accent);
         }
 
         @media (max-width: 768px) {
@@ -374,12 +571,60 @@
             .reference-contact {
                 text-align: center;
             }
+
+            /* Disable parallax on mobile */
+            .parallax-layer {
+                transform: none !important;
+            }
+
+            .theme-toggle {
+                top: 10px;
+                right: 10px;
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        /* Accessibility - Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+
+            .parallax-layer {
+                transform: none !important;
+            }
+
+            section {
+                opacity: 1;
+                transform: none;
+                animation: none;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" aria-label="Toggle dark/light theme" id="themeToggle">
+        <svg class="sun-icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+        </svg>
+        <svg class="moon-icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+        </svg>
+    </button>
+
     <div class="parallax-container">
-        <div class="parallax-bg" id="parallaxBg"></div>
+        <!-- Parallax Layers -->
+        <div class="parallax-layer parallax-layer-1"></div>
+        <div class="parallax-layer parallax-layer-2"></div>
+        <div class="parallax-layer parallax-layer-3"></div>
+        <div class="parallax-overlay"></div>
 
         <header>
             <div class="container">
@@ -620,8 +865,16 @@
                     <h3>Zubaer Alam Bihim</h3>
                     <p>Senior Software Engineer</p>
                     <div class="social-links">
-                        <a href="https://linkedin.com/in/bihim" class="social-link" target="_blank">in</a>
-                        <a href="https://github.com/bihim" class="social-link" target="_blank">G</a>
+                        <a href="https://linkedin.com/in/bihim" class="social-link" target="_blank" aria-label="LinkedIn Profile">
+                            <svg fill="currentColor" width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                        </a>
+                        <a href="https://github.com/bihim" class="social-link" target="_blank" aria-label="GitHub Profile">
+                            <svg fill="currentColor" width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
                     </div>
                     <p>&copy; 2025 Zubaer Alam Bihim. All rights reserved.</p>
                 </div>
@@ -631,15 +884,93 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const parallaxBg = document.getElementById('parallaxBg');
+            // Theme Toggle Functionality
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
 
-            document.addEventListener('scroll', function() {
-                const scrollPosition = window.pageYOffset;
-                const parallaxSpeed = 0.5;
+            // Load saved theme from localStorage
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                body.classList.add('light-theme');
+            }
 
-                // Apply parallax effect to background
-                parallaxBg.style.transform = `scale(1.1) translateY(${scrollPosition * parallaxSpeed}px)`;
+            // Theme toggle event
+            themeToggle.addEventListener('click', function() {
+                body.classList.toggle('light-theme');
+
+                // Save theme preference
+                if (body.classList.contains('light-theme')) {
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    localStorage.setItem('theme', 'dark');
+                }
             });
+
+            // Keyboard accessibility for theme toggle
+            themeToggle.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    themeToggle.click();
+                }
+            });
+
+            // Multi-layer Parallax Effect
+            const parallaxLayers = document.querySelectorAll('.parallax-layer');
+            let ticking = false;
+
+            function updateParallax() {
+                const scrollPosition = window.pageYOffset;
+
+                // Check if reduced motion is preferred
+                const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+                // Check if mobile
+                const isMobile = window.innerWidth <= 768;
+
+                if (!prefersReducedMotion && !isMobile) {
+                    // Different speeds for each layer
+                    parallaxLayers[0].style.transform = `translateY(${scrollPosition * 0.3}px)`;
+                    parallaxLayers[1].style.transform = `translateY(${scrollPosition * 0.5}px)`;
+                    parallaxLayers[2].style.transform = `translateY(${scrollPosition * 0.8}px)`;
+                }
+
+                ticking = false;
+            }
+
+            function requestTick() {
+                if (!ticking) {
+                    requestAnimationFrame(updateParallax);
+                    ticking = true;
+                }
+            }
+
+            // Parallax scroll event
+            window.addEventListener('scroll', requestTick, { passive: true });
+
+            // Intersection Observer for section animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all sections except the first one (header should be visible immediately)
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // Make first section visible immediately
+            if (sections.length > 0) {
+                sections[0].classList.add('visible');
+            }
         });
     </script>
 </body>
