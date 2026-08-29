@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zubaer Alam Bihim — Senior Software Engineer</title>
+<title>Zubaer Alam Bihim — Flutter developer for apps that ship to both stores</title>
 <meta name="description" content="Zubaer Alam Bihim — Senior Software Engineer specializing in mobile app development (Flutter), AI-assisted engineering, and backend development.">
 <meta property="og:title" content="Zubaer Alam Bihim — Senior Software Engineer">
 <meta property="og:description" content="Mobile apps that ship to both stores. 6+ years, 20+ apps, 5 countries.">
@@ -14,7 +14,8 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://bihim.co/">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👨‍💻</text></svg>">
+<meta name="theme-color" content="#100F0B">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%231F4FD8%22/><text x=%2250%22 y=%2268%22 font-size=%2254%22 font-family=%22sans-serif%22 font-weight=%22700%22 fill=%22white%22 text-anchor=%22middle%22>B</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -31,7 +32,8 @@
 
   --bone:       #F1EEE4;
   --muted:      #A39D87;
-  --faint:      #6E695A;
+  --faint:      #8E8873;
+  --error:      #D9705E;
 
   --brass:      #8C8A5A;
   --brass-hi:   #C6C288;
@@ -89,6 +91,7 @@ h1, h2, h3 {
   padding: 10px 16px; font-family: var(--mono); font-size: 13px;
 }
 .skip-link:focus { left: 8px; top: 8px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
 /* ============================================================
    Canvas node-field (ambient)
@@ -121,8 +124,6 @@ h1, h2, h3 {
               margin .25s var(--ease), border-color .25s;
 }
 body.cursor-on .cur-dot, body.cursor-on .cur-ring { opacity: 1; }
-body.cursor-on * { cursor: none !important; }
-body.cursor-on input, body.cursor-on textarea { cursor: text !important; }
 body.cur-active .cur-ring {
   width: 52px; height: 52px; margin: -26px 0 0 -26px;
   border-color: var(--slate);
@@ -155,7 +156,7 @@ body.cur-active .cur-dot { opacity: 0; }
 }
 .rail-node {
   display: flex; align-items: center; gap: 10px;
-  color: var(--faint); font-family: var(--mono); font-size: 10px;
+  color: var(--faint); font-family: var(--mono); font-size: 11px;
   letter-spacing: .16em; text-transform: uppercase;
   writing-mode: vertical-rl; text-orientation: mixed;
   padding: 6px 0; transition: color .25s;
@@ -201,6 +202,7 @@ body.cur-active .cur-dot { opacity: 0; }
     -webkit-overflow-scrolling: touch;
   }
   .topbar-nav::-webkit-scrollbar { display: none; }
+  .topbar-nav { mask-image: linear-gradient(90deg, #000 88%, transparent); -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent); padding-right: 24px; }
   .topbar-nav a {
     font-family: var(--mono); font-size: 11px; letter-spacing: .14em;
     text-transform: uppercase; color: var(--muted); white-space: nowrap;
@@ -255,8 +257,13 @@ section { position: relative; }
 .hero-tag {
   font-family: var(--mono); font-size: 11px; letter-spacing: .22em;
   text-transform: uppercase; color: var(--muted);
-  display: flex; align-items: center; gap: 12px; margin-bottom: 26px;
+  display: flex; align-items: center; gap: 12px; margin-bottom: 18px;
 }
+.hero-name {
+  font-family: var(--body); font-size: 15px; font-weight: 500; color: var(--bone);
+  margin: 0 0 18px; display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline;
+}
+.hero-name span { color: var(--muted); font-weight: 400; }
 .pulse {
   width: 7px; height: 7px; border-radius: 50%; background: var(--brass-hi);
   box-shadow: 0 0 0 0 rgba(198,194,136,.6);
@@ -336,8 +343,8 @@ section { position: relative; }
 .portrait-corner.br { bottom: -7px; right: -7px; border-left: 0; border-top: 0; }
 .portrait-cap {
   position: absolute; bottom: 12px; left: 14px; z-index: 2;
-  font-family: var(--mono); font-size: 10px; letter-spacing: .16em;
-  text-transform: uppercase; color: var(--muted);
+  font-family: var(--mono); font-size: 11px; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--bone);
 }
 
 /* ============================================================
@@ -351,7 +358,18 @@ section { position: relative; }
   display: flex; gap: 44px; width: max-content;
   animation: slide 34s linear infinite;
 }
-.ticker:hover .ticker-track { animation-play-state: paused; }
+.ticker:hover .ticker-track, .ticker.paused .ticker-track { animation-play-state: paused; }
+.ticker { position: relative; }
+.ticker-pause {
+  position: absolute; top: 50%; right: 12px; transform: translateY(-50%); z-index: 2;
+  width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--line-hi);
+  background: rgba(16,15,11,.85); color: var(--muted); display: grid; place-items: center;
+  transition: color .2s, border-color .2s;
+}
+.ticker-pause:hover { color: var(--brass-hi); border-color: var(--brass); }
+.ticker-pause .ico-play { display: none; }
+.ticker.paused .ticker-pause .ico-pause { display: none; }
+.ticker.paused .ticker-pause .ico-play { display: block; }
 @keyframes slide { to { transform: translateX(-50%); } }
 .ticker-item {
   font-family: var(--mono); font-size: 12px; letter-spacing: .16em;
@@ -372,15 +390,12 @@ section { position: relative; }
 .cap {
   display: flex; align-items: center; gap: 14px;
   padding: 16px 0; border-bottom: 1px solid var(--line);
-  transition: padding-left .3s var(--ease);
 }
-.cap:hover { padding-left: 10px; }
 .cap-idx {
   font-family: var(--mono); font-size: 11px; color: var(--faint); flex: none;
 }
 .cap svg { flex: none; }
 .cap-name { font-size: 15px; font-weight: 500; }
-.cap:hover .cap-name { color: var(--brass-hi); }
 
 .about-body p { color: var(--muted); font-size: 17px; line-height: 1.75; margin: 0 0 22px; }
 .about-body strong { color: var(--bone); font-weight: 600; }
@@ -396,8 +411,8 @@ section { position: relative; }
 }
 .stat-val span { color: var(--brass); }
 .stat-lab {
-  font-family: var(--mono); font-size: 10px; letter-spacing: .16em;
-  text-transform: uppercase; color: var(--faint); margin-top: 10px;
+  font-family: var(--mono); font-size: 12px; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--muted); margin-top: 10px;
 }
 
 /* ============================================================
@@ -485,7 +500,7 @@ section { position: relative; }
 }
 .flag {
   position: absolute; top: 12px; right: 12px; z-index: 2;
-  font-family: var(--mono); font-size: 10px; letter-spacing: .12em;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
   text-transform: uppercase; padding: 5px 10px; border-radius: 2px;
   background: rgba(16,15,11,.8); border: 1px solid var(--brass); color: var(--brass-hi);
   backdrop-filter: blur(4px);
@@ -501,7 +516,7 @@ section { position: relative; }
 .card-line { color: var(--muted); font-size: 14.5px; margin: 10px 0 16px; line-height: 1.6; }
 .tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .tag {
-  font-family: var(--mono); font-size: 10px; letter-spacing: .08em;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .08em;
   text-transform: uppercase; padding: 4px 9px; border-radius: 2px;
   background: rgba(140,138,90,.11); color: var(--brass-hi);
 }
@@ -554,7 +569,7 @@ section { position: relative; }
   padding: clamp(26px, 4vw, 40px); border: 1px solid var(--line);
   border-radius: 3px; background: linear-gradient(120deg, var(--panel), rgba(28,26,19,0));
 }
-.writing-card h3 { font-size: 24px; }
+.writing-card h2 { font-size: 24px; }
 .writing-card p { color: var(--muted); margin: 8px 0 0; max-width: 52ch; }
 
 .contact { padding: clamp(70px, 10vw, 130px) 0; border-top: 1px solid var(--line); }
@@ -566,17 +581,20 @@ section { position: relative; }
   border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 13px;
   color: var(--muted); transition: color .25s, padding-left .25s var(--ease);
 }
+a.contact-item { color: var(--bone); }
+a.contact-item::after { content: '↗'; margin-left: auto; color: var(--faint); transition: color .25s; }
 a.contact-item:hover { color: var(--brass-hi); padding-left: 8px; }
+a.contact-item:hover::after { color: var(--brass-hi); }
 .contact-item .k {
-  font-size: 10px; letter-spacing: .16em; text-transform: uppercase;
-  color: var(--faint); width: 74px; flex: none;
+  font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--faint); width: 80px; flex: none;
 }
 
 form { display: flex; flex-direction: column; gap: 20px; }
 label {
   display: flex; flex-direction: column; gap: 9px;
-  font-family: var(--mono); font-size: 10px; letter-spacing: .16em;
-  text-transform: uppercase; color: var(--faint);
+  font-family: var(--mono); font-size: 12px; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--muted);
 }
 input, textarea {
   font-family: var(--body); font-size: 15px; color: var(--bone);
@@ -584,8 +602,12 @@ input, textarea {
   padding: 12px 0; border-radius: 0; transition: border-color .25s;
   resize: vertical;
 }
-input:focus, textarea:focus { outline: 0; border-bottom-color: var(--brass); }
-.form-note { font-family: var(--mono); font-size: 11px; color: var(--faint); line-height: 1.7; }
+input:focus-visible, textarea:focus-visible { outline: 2px solid var(--slate); outline-offset: 4px; border-bottom-color: var(--brass); border-radius: 2px; }
+input[aria-invalid="true"], textarea[aria-invalid="true"] { border-bottom-color: var(--error); }
+.field-error { display: none; font-family: var(--body); font-size: 13px; letter-spacing: 0; text-transform: none; color: var(--error); }
+.field-error.show { display: block; }
+.form-note { font-family: var(--mono); font-size: 12px; color: var(--muted); line-height: 1.7; }
+.form-note.is-error { color: var(--error); }
 
 /* ============================================================
    Footer + FAB
@@ -594,7 +616,7 @@ input:focus, textarea:focus { outline: 0; border-bottom-color: var(--brass); }
 .foot {
   display: flex; align-items: center; justify-content: space-between;
   flex-wrap: wrap; gap: 16px;
-  font-family: var(--mono); font-size: 11px; letter-spacing: .1em; color: var(--faint);
+  font-family: var(--mono); font-size: 12px; letter-spacing: .1em; color: var(--muted);
 }
 .foot a { color: var(--muted); }
 .foot a:hover { color: var(--brass-hi); }
@@ -678,11 +700,11 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
 </head>
 <body>
 
-<a class="skip-link" href="#home">Skip to content</a>
+<a class="skip-link" href="#main">Skip to content</a>
 
-<a class="switch-theme" id="switch-theme" href="index.html" title="See the alternate version of this site" data-cursor>
+<a class="switch-theme" id="switch-theme" href="index.html" aria-label="View the alternate version of this site (light design, different layout)" data-cursor>
   <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
-  Switch theme
+  Alternate site
 </a>
 
 <canvas id="field" aria-hidden="true"></canvas>
@@ -698,13 +720,13 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
   <div class="rail-nodes">
     <a class="rail-node" href="#home" data-cursor>Home</a>
     <a class="rail-node" href="#about" data-cursor>About</a>
-    <a class="rail-node" href="#experience" data-cursor>Work</a>
+    <a class="rail-node" href="#experience" data-cursor>Experience</a>
     <a class="rail-node" href="#projects" data-cursor>Projects</a>
     <a class="rail-node" href="#contact" data-cursor>Contact</a>
   </div>
   <div class="rail-foot">
-    <a href="https://github.com/bihim" target="_blank" rel="noopener" data-cursor>GH</a>
-    <a href="https://linkedin.com/in/bihim" target="_blank" rel="noopener" data-cursor>IN</a>
+    <a href="https://github.com/bihim" target="_blank" rel="noopener" data-cursor aria-label="GitHub (opens in new tab)">GH</a>
+    <a href="https://linkedin.com/in/bihim" target="_blank" rel="noopener" data-cursor aria-label="LinkedIn (opens in new tab)">IN</a>
   </div>
 </nav>
 
@@ -715,19 +737,20 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
   <nav class="topbar-nav" aria-label="Sections">
     <a href="#home">Home</a>
     <a href="#about">About</a>
-    <a href="#experience">Work</a>
+    <a href="#experience">Experience</a>
     <a href="#projects">Projects</a>
     <a href="#contact">Contact</a>
   </nav>
 </header>
 
-<main>
+<main id="main">
 
 <!-- ============ Hero ============ -->
 <section id="home" class="hero">
   <div class="wrap hero-grid">
     <div class="hero-text">
-      <div class="hero-tag rv"><span class="pulse"></span> Available for projects · UTC+6</div>
+      <div class="hero-tag rv"><span class="pulse" aria-hidden="true"></span> Available for projects · UTC+6</div>
+      <p class="hero-name rv">Zubaer Alam Bihim <span>Senior Software Engineer · Flutter · Chandpur, Bangladesh</span></p>
       <h1 class="rv">Ships to<br>the store<span class="dim">,</span><br><em>not the demo.</em></h1>
       <div class="hero-sub rv">
         <span>Flutter &amp; Dart</span><span>AI-Assisted Engineering</span><span>Backend</span>
@@ -755,7 +778,8 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
 </section>
 
 <!-- ============ Ticker ============ -->
-<div class="ticker" aria-label="Core technologies">
+<div class="ticker" id="ticker-wrap" aria-label="Core technologies">
+  <button class="ticker-pause" id="ticker-pause" type="button" aria-pressed="false" aria-label="Pause scrolling technologies" data-cursor><svg class="ico-pause" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg><svg class="ico-play" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M7 5v14l12-7z"/></svg></button>
   <div class="ticker-track" id="ticker">
     <div class="ticker-item">Flutter</div><div class="ticker-item">Dart</div>
     <div class="ticker-item">Kotlin</div><div class="ticker-item">AI-Assisted Engineering</div>
@@ -771,22 +795,22 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
     <div class="eyebrow rv">About</div>
     <div class="about-grid">
       <div class="capabilities rv">
-        <div class="cap" data-cursor>
+        <div class="cap">
           <span class="cap-idx">01</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8C8A5A" stroke-width="1.6"><path d="M8 3h8a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M11 18h2"/></svg>
           <span class="cap-name">Mobile Development</span>
         </div>
-        <div class="cap" data-cursor>
+        <div class="cap">
           <span class="cap-idx">02</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8C8A5A" stroke-width="1.6"><path d="M12 2 3 7v6c0 5 4 8.5 9 9 5-.5 9-4 9-9V7l-9-5Z"/><path d="m8.5 12 2.5 2.5L16 9"/></svg>
           <span class="cap-name">AI-Assisted Engineering</span>
         </div>
-        <div class="cap" data-cursor>
+        <div class="cap">
           <span class="cap-idx">03</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8C8A5A" stroke-width="1.6"><path d="M4 5h16v5H4z"/><path d="M4 14h16v5H4z"/><path d="M7 7.5h.01"/><path d="M7 16.5h.01"/></svg>
           <span class="cap-name">Backend &amp; APIs</span>
         </div>
-        <div class="cap" data-cursor>
+        <div class="cap">
           <span class="cap-idx">04</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8C8A5A" stroke-width="1.6"><path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0Z"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18"/><path d="M12 3a14 14 0 0 0 0 18"/></svg>
           <span class="cap-name">Cross-platform &amp; Web</span>
@@ -830,7 +854,7 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
     <div class="tree">
       <div class="branch now rv">
         <div class="branch-date">2024 — Present</div>
-        <div class="branch-role">Senior Software Engineer</div>
+        <h3 class="branch-role">Senior Software Engineer</h3>
         <div class="branch-org">C7Creative · Florida, USA · Remote (project basis)</div>
         <p>Built Kingstone Comics, a motion-comics and movie reader app (Android &amp; iOS), and Referable,
         a multi-tenant referral platform (Flutter + Kotlin/Spring Boot). Currently building HottestSpot, an
@@ -841,7 +865,7 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
 
       <div class="branch now rv">
         <div class="branch-date">2025 — Present</div>
-        <div class="branch-role">Independent Software Developer</div>
+        <h3 class="branch-role">Independent Software Developer</h3>
         <div class="branch-org">Remote / Freelance</div>
         <p>Self-directed and client work including Deshi Choco (e-commerce, Next.js 14 + Flutter + Supabase,
         10-table Postgres schema with triggers and row-level security). Technical lead on Madrasah Management
@@ -850,7 +874,7 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
 
       <div class="branch rv">
         <div class="branch-date">Jun 2023 — May 2025</div>
-        <div class="branch-role">Senior Software Engineer</div>
+        <h3 class="branch-role">Senior Software Engineer</h3>
         <div class="branch-org">JobsNavi · Chemnitz, Germany</div>
         <p>Built jobsnavi.de for Android and iOS, an investor networking/event app (vip-chemnitz.de),
         and a health-based candidate-matching app.</p>
@@ -858,7 +882,7 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
 
       <div class="branch rv">
         <div class="branch-date">Apr 2022 — Apr 2023</div>
-        <div class="branch-role">Senior Software Engineer</div>
+        <h3 class="branch-role">Senior Software Engineer</h3>
         <div class="branch-org">RedSpider Web &amp; Art Design · Dubai, UAE</div>
         <p>Delivered audio/video chat apps with admin panels (Feeta Business, ZappApp Social), a
         doctor-appointment system (GoDoctor), and a matrimonial app with in-app support chat.</p>
@@ -866,7 +890,7 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
 
       <div class="branch rv">
         <div class="branch-date">2020 — 2022</div>
-        <div class="branch-role">Mobile Application Developer</div>
+        <h3 class="branch-role">Mobile Application Developer</h3>
         <div class="branch-org">Ireland, India &amp; Bangladesh</div>
         <p>WhatsForDinner (Dublin): driver, customer, and merchant apps. Vertitect (Kolkata):
         crypto-management, agri e-commerce, e-learning. Root Devs &amp; Artificial Soft (Dhaka):
@@ -883,11 +907,11 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
     <div class="proj-head">
       <h2 class="sec-title rv">Selected builds</h2>
       <div class="filters rv" role="group" aria-label="Filter projects by discipline">
-        <button class="chip" data-filter="all" aria-pressed="true" data-cursor>All <span class="n">5</span></button>
-        <button class="chip" data-filter="mobile" aria-pressed="false" data-cursor>Mobile <span class="n">5</span></button>
-        <button class="chip" data-filter="ai" aria-pressed="false" data-cursor>AI <span class="n">1</span></button>
-        <button class="chip" data-filter="backend" aria-pressed="false" data-cursor>Backend <span class="n">3</span></button>
-        <button class="chip" data-filter="web" aria-pressed="false" data-cursor>Web <span class="n">2</span></button>
+        <button class="chip" data-filter="all" aria-pressed="true" data-cursor>All <span class="n"></span></button>
+        <button class="chip" data-filter="mobile" aria-pressed="false" data-cursor>Mobile <span class="n"></span></button>
+        <button class="chip" data-filter="ai" aria-pressed="false" data-cursor>AI <span class="n"></span></button>
+        <button class="chip" data-filter="backend" aria-pressed="false" data-cursor>Backend <span class="n"></span></button>
+        <button class="chip" data-filter="web" aria-pressed="false" data-cursor>Web <span class="n"></span></button>
       </div>
     </div>
 
@@ -895,7 +919,7 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
 
       <div class="card rv" role="button" tabindex="0" data-tilt data-cursor
         data-cat="mobile backend"
-        data-title="Referable"
+        data-title="Referable" aria-labelledby="t-referable"
         data-meta="C7Creative · Florida, USA · Live in both stores · 2 apps"
         data-shot="assets/img/projects/referable.jpg"
         data-tags="Flutter|Kotlin|Spring Boot|Postgres|Firebase"
@@ -905,7 +929,7 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
           <img src="assets/img/projects/referable.jpg" alt="Referable screenshot" loading="lazy">
         </div>
         <div class="card-body">
-          <div class="card-title">Referable <span class="arrow">↗</span></div>
+          <div class="card-title" id="t-referable">Referable <span class="arrow" aria-hidden="true">↗</span></div>
           <p class="card-line">Multi-tenant referral platform — Customer and Business apps, both live on Google Play and the App Store.</p>
           <div class="tags"><span class="tag">Flutter</span><span class="tag">Kotlin</span><span class="tag">Spring Boot</span></div>
         </div>
@@ -913,7 +937,7 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
 
       <div class="card rv" role="button" tabindex="0" data-tilt data-cursor
         data-cat="mobile"
-        data-title="Kingstone Comics"
+        data-title="Kingstone Comics" aria-labelledby="t-kingstone-comics"
         data-meta="C7Creative · Florida, USA · Live in both stores"
         data-shot="assets/img/projects/kingstone.jpg"
         data-tags="Flutter|Video|Android|iOS"
@@ -923,7 +947,7 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
           <img src="assets/img/projects/kingstone.jpg" alt="Kingstone Comics screenshot" loading="lazy">
         </div>
         <div class="card-body">
-          <div class="card-title">Kingstone Comics <span class="arrow">↗</span></div>
+          <div class="card-title" id="t-kingstone-comics">Kingstone Comics <span class="arrow" aria-hidden="true">↗</span></div>
           <p class="card-line">Motion-comics and movie reader, shipped to the Play Store and App Store.</p>
           <div class="tags"><span class="tag">Flutter</span><span class="tag">Video</span><span class="tag">iOS / Android</span></div>
         </div>
@@ -931,7 +955,7 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
 
       <div class="card rv" role="button" tabindex="0" data-tilt data-cursor
         data-cat="mobile backend web"
-        data-title="HottestSpot"
+        data-title="HottestSpot" aria-labelledby="t-hottestspot"
         data-meta="C7Creative · Florida, USA · In progress"
         data-shot="assets/img/projects/hottestspot.jpg"
         data-tags="Flutter|Web|Go|Clean architecture"
@@ -942,7 +966,7 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
           <img src="assets/img/projects/hottestspot.jpg" alt="HottestSpot screenshot" loading="lazy">
         </div>
         <div class="card-body">
-          <div class="card-title">HottestSpot <span class="arrow">↗</span></div>
+          <div class="card-title" id="t-hottestspot">HottestSpot <span class="arrow" aria-hidden="true">↗</span></div>
           <p class="card-line">Event ticketing — creators sell tickets, admins monitor. Flutter + web frontends on a Go backend.</p>
           <div class="tags"><span class="tag">Flutter</span><span class="tag">Go</span><span class="tag">Ticketing</span></div>
         </div>
@@ -950,7 +974,7 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
 
       <div class="card rv" role="button" tabindex="0" data-tilt data-cursor
         data-cat="ai web mobile backend"
-        data-title="Deshi Choco"
+        data-title="Deshi Choco" aria-labelledby="t-deshi-choco"
         data-meta="Independent · Web + mobile · AI-built"
         data-shot="assets/img/projects/deshichoco.jpg"
         data-tags="Next.js 14|Flutter|Supabase|Postgres|Claude"
@@ -962,7 +986,7 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
           <img src="assets/img/projects/deshichoco.jpg" alt="Deshi Choco screenshot" loading="lazy">
         </div>
         <div class="card-body">
-          <div class="card-title">Deshi Choco <span class="arrow">↗</span></div>
+          <div class="card-title" id="t-deshi-choco">Deshi Choco <span class="arrow" aria-hidden="true">↗</span></div>
           <p class="card-line">E-commerce across web and mobile — Next.js 14, Flutter, and a 10-table Postgres schema on Supabase.</p>
           <div class="tags"><span class="tag">Next.js</span><span class="tag">Supabase</span><span class="tag">AI-Built</span></div>
         </div>
@@ -970,7 +994,7 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
 
       <div class="card rv" role="button" tabindex="0" data-tilt data-cursor
         data-cat="mobile"
-        data-title="JobsNavi"
+        data-title="JobsNavi" aria-labelledby="t-jobsnavi"
         data-meta="JobsNavi · Chemnitz, Germany · Live in both stores"
         data-shot="assets/img/projects/jobsnavi.jpg"
         data-tags="Flutter|Android|iOS|REST"
@@ -981,7 +1005,7 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
           <img src="assets/img/projects/jobsnavi.jpg" alt="JobsNavi screenshot" loading="lazy">
         </div>
         <div class="card-body">
-          <div class="card-title">JobsNavi <span class="arrow">↗</span></div>
+          <div class="card-title" id="t-jobsnavi">JobsNavi <span class="arrow" aria-hidden="true">↗</span></div>
           <p class="card-line">Job-recruiting platform for the German market — live on Google Play and the App Store.</p>
           <div class="tags"><span class="tag">Flutter</span><span class="tag">Android</span><span class="tag">iOS</span></div>
         </div>
@@ -997,7 +1021,7 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
   <div class="wrap">
     <div class="writing-card rv">
       <div>
-        <h3>Also writing</h3>
+        <h2>Also writing</h2>
         <p>Notes on Flutter, backend architecture, and what it actually takes to ship a mobile product.</p>
       </div>
       <a href="https://dev.to/bihim" class="btn" target="_blank" rel="noopener" data-magnet data-cursor>Read on dev.to</a>
@@ -1020,12 +1044,12 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
       </div>
     </div>
 
-    <form class="rv" id="contact-form">
-      <label>Name <input type="text" name="name" required autocomplete="name"></label>
-      <label>Email <input type="email" name="email" required autocomplete="email"></label>
-      <label>Message <textarea name="message" rows="4" required></textarea></label>
-      <button type="submit" class="btn btn-primary" style="align-self:flex-start" data-magnet data-cursor>Send message</button>
-      <p class="form-note">Opens your mail app with the message ready to send. Prefer to write directly? zubaerbihim@gmail.com</p>
+    <form class="rv" id="contact-form" novalidate>
+      <label>Name <input type="text" name="name" required autocomplete="name" aria-describedby="err-name"><span class="field-error" id="err-name"></span></label>
+      <label>Email <input type="email" name="email" required autocomplete="email" inputmode="email" aria-describedby="err-email"><span class="field-error" id="err-email"></span></label>
+      <label>Message <textarea name="message" rows="4" required aria-describedby="err-message"></textarea><span class="field-error" id="err-message"></span></label>
+      <button type="submit" class="btn btn-primary" id="submit-btn" style="align-self:flex-start" data-magnet data-cursor>Send message</button>
+      <p class="form-note" id="form-note" role="status" aria-live="polite">Opens your mail app with the message ready to send. Prefer to write directly? zubaerbihim@gmail.com</p>
     </form>
   </div>
 </section>
@@ -1083,6 +1107,15 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
   /* ---------- Ticker: duplicate track for a seamless loop ---------- */
   var ticker = document.getElementById('ticker');
   if (ticker) { ticker.innerHTML += ticker.innerHTML; }
+  var tickerWrap = document.getElementById('ticker-wrap');
+  var tickerBtn = document.getElementById('ticker-pause');
+  if (tickerWrap && tickerBtn) {
+    tickerBtn.addEventListener('click', function () {
+      var paused = tickerWrap.classList.toggle('paused');
+      tickerBtn.setAttribute('aria-pressed', String(paused));
+      tickerBtn.setAttribute('aria-label', paused ? 'Resume scrolling technologies' : 'Pause scrolling technologies');
+    });
+  }
 
   /* ---------- Reveal on scroll ---------- */
   var revealables = document.querySelectorAll('.rv');
@@ -1139,6 +1172,15 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
   var empty = document.getElementById('empty');
 
   chips.forEach(function (chip) {
+    var want = chip.dataset.filter, n = 0;
+    cards.forEach(function (card) {
+      if (want === 'all' || card.dataset.cat.split(' ').indexOf(want) !== -1) n++;
+    });
+    var badge = chip.querySelector('.n');
+    if (badge) badge.textContent = n;
+  });
+
+  chips.forEach(function (chip) {
     chip.addEventListener('click', function () {
       var want = chip.dataset.filter;
       chips.forEach(function (c) { c.setAttribute('aria-pressed', String(c === chip)); });
@@ -1164,6 +1206,17 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
   var modal = document.getElementById('modal');
   var sheetImg = document.getElementById('sheet-img');
   var lastFocus = null;
+  var shell = document.querySelector('.shell');
+  var FOCUSABLE = 'a[href], button:not([disabled]), input, textarea, select, [tabindex]:not([tabindex="-1"])';
+  function trapTab(e) {
+    if (e.key !== 'Tab') return;
+    var items = Array.prototype.slice.call(modal.querySelectorAll(FOCUSABLE))
+      .filter(function (el) { return el.offsetParent !== null; });
+    if (!items.length) return;
+    var first = items[0], last = items[items.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
 
   function openSheet(card) {
     lastFocus = card;
@@ -1197,7 +1250,7 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
     if (card.dataset.link) {
       links.insertAdjacentHTML('beforeend',
         '<a class="btn btn-primary btn-sm" target="_blank" rel="noopener" href="' +
-        card.dataset.link + '">Code on GitHub ↗</a>');
+        card.dataset.link + '">GitHub profile ↗</a>');
     }
     if (card.dataset.site) {
       links.insertAdjacentHTML('beforeend',
@@ -1207,12 +1260,18 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
 
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
+    if (shell) shell.setAttribute('inert', '');
+    document.querySelectorAll('.fab, .switch-theme, .rail').forEach(function (el) { el.setAttribute('inert', ''); });
+    modal.addEventListener('keydown', trapTab);
     document.getElementById('sheet-close').focus();
   }
 
   function closeSheet() {
     modal.classList.remove('open');
     document.body.style.overflow = '';
+    if (shell) shell.removeAttribute('inert');
+    document.querySelectorAll('.fab, .switch-theme, .rail').forEach(function (el) { el.removeAttribute('inert'); });
+    modal.removeEventListener('keydown', trapTab);
     if (lastFocus) { lastFocus.focus(); }
   }
 
@@ -1231,13 +1290,51 @@ html.page-entered body { opacity: 1; transform: none; transition: opacity .55s c
   /* ---------- Contact form → mail client ---------- */
   // Contact form -> opens the visitor's mail app with the message pre-filled (no backend).
   var form = document.getElementById('contact-form');
+  var submitBtn = document.getElementById('submit-btn');
+  var note = document.getElementById('form-note');
+  var noteDefault = note ? note.textContent : '';
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  function setError(field, msg) {
+    var el = document.getElementById(field.getAttribute('aria-describedby'));
+    if (msg) {
+      field.setAttribute('aria-invalid', 'true');
+      if (el) { el.textContent = msg; el.classList.add('show'); }
+    } else {
+      field.removeAttribute('aria-invalid');
+      if (el) { el.textContent = ''; el.classList.remove('show'); }
+    }
+  }
+  function validate(field) {
+    var v = field.value.trim();
+    if (field.name === 'name')    setError(field, v ? '' : 'Please enter your name.');
+    if (field.name === 'email')   setError(field, !v ? 'Please enter your email.' : (EMAIL_RE.test(v) ? '' : 'That email doesn\u2019t look right \u2014 check for a typo.'));
+    if (field.name === 'message') setError(field, v ? '' : 'Tell me a few words about the project.');
+  }
+  ['name', 'email', 'message'].forEach(function (n) {
+    var f = form[n];
+    f.addEventListener('blur', function () { validate(f); });
+    f.addEventListener('input', function () { if (f.hasAttribute('aria-invalid')) validate(f); });
+  });
   form.addEventListener('submit', function (e) {
     e.preventDefault();
+    ['name', 'email', 'message'].forEach(function (n) { validate(form[n]); });
+    var firstBad = form.querySelector('[aria-invalid="true"]');
+    if (firstBad) {
+      note.textContent = 'A few fields need attention \u2014 check the messages above.';
+      note.classList.add('is-error');
+      firstBad.focus();
+      return;
+    }
     var d = new FormData(form);
     var body = 'From: ' + d.get('name') + ' <' + d.get('email') + '>\n\n' + d.get('message');
     window.location.href = 'mailto:zubaerbihim@gmail.com'
       + '?subject=' + encodeURIComponent('Project enquiry from ' + d.get('name'))
       + '&body=' + encodeURIComponent(body);
+    submitBtn.textContent = 'Opening your email app\u2026';
+    submitBtn.disabled = true;
+    note.classList.remove('is-error');
+    note.textContent = 'If nothing opened, email zubaerbihim@gmail.com directly or use WhatsApp.';
+    setTimeout(function () { submitBtn.textContent = 'Send message'; submitBtn.disabled = false; note.textContent = noteDefault; }, 6000);
   });
 
   /* ---------- Pointer: cursor, magnet, tilt (fine pointers only) ---------- */
